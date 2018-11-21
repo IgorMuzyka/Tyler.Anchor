@@ -11,7 +11,7 @@ import Tag
 
 extension Anchor {
 
-	public func constraints(context: Context) -> [NativeConstraint] {
+	public func constraints(context: ContextProtocol) -> [NativeConstraint] {
 		switch toValue {
 		case .anchor(let anchor): return output(anchor: anchor, context: context)
 		case .size: return outputForSize(context: context)
@@ -24,7 +24,7 @@ extension Anchor {
 		}
 	}
 
-	private func outputForSize(context: Context) -> [NativeConstraint] {
+	private func outputForSize(context: ContextProtocol) -> [NativeConstraint] {
 		return pins.filter {
 			return $0.attribute == .width || $0.attribute == .height
 		}.compactMap { pin in
@@ -49,7 +49,7 @@ extension Anchor {
 		}
 	}
 
-	private func output(anchor anotherAnchor: Anchor, context: Context) -> [NativeConstraint] {
+	private func output(anchor anotherAnchor: Anchor, context: ContextProtocol) -> [NativeConstraint] {
 		let anotherPins = anotherAnchor.pins.isEmpty ? pins : anotherAnchor.pins
 		let pairs = zip(pins, anotherPins)
 
@@ -81,7 +81,7 @@ extension Anchor {
 		}
 	}
 
-	private func item(in context: Context) -> NativeView? {
+	private func item(in context: ContextProtocol) -> NativeView? {
 		switch subject {
 		case .id(let id): return context.root.find(where: { $0.id == id})?.view
 		case .`self`: return context.view
