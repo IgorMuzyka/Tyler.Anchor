@@ -1,6 +1,8 @@
 
 import Identifier
 
+#if os(iOS) || os(tvOS) || os(macOS)
+
 public protocol ContextProtocol: class {
 
     var view: NativeView { get }
@@ -11,3 +13,5 @@ public protocol ContextProtocol: class {
     func find(where predicate: (ContextProtocol) -> Bool) -> ContextProtocol?
     func find(byName name: String) -> ContextProtocol?
 }
+
+#endif
