@@ -6,10 +6,10 @@ public final class Anchor: Codable, Taggable {
 	public var subject: Subject
 
 	var pins: [Pin] = []
-	var multiplierValue: Double = 1
-	var priorityValue: Float?
-	var relationValue: Relation = .equal
-	public var toValue: To = .none
+	var multiplier: Double = 1
+	var priority: Float?
+	var relation: Relation = .equal
+	public var to: To = .none
     public var tags: [Tag] = []
 
 	public init(_ subject: Subject) {

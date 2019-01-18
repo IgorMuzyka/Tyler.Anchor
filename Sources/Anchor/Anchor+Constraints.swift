@@ -12,13 +12,13 @@ import Tag
 extension Anchor {
 
 	public func constraints(context: ContextProtocol) -> [NativeConstraint] {
-		switch toValue {
+		switch to {
 		case .anchor(let anchor): return output(anchor: anchor, context: context)
 		case .size: return outputForSize(context: context)
 		case .none:
             guard let _ = context.super else { return [] }
 
-            toValue = .anchor(Anchor(.super))
+            to = .anchor(Anchor(.super))
 
             return constraints(context: context)
 		}
@@ -30,7 +30,7 @@ extension Anchor {
 		}.compactMap { pin in
 			guard
 				let attribute = pin.attribute.native,
-				let relation = relationValue.native
+				let relation = relation.native
 				else { return nil }
 
 			let constraint = NativeConstraint(
@@ -39,7 +39,7 @@ extension Anchor {
 				relatedBy: relation,
 				toItem: nil,
 				attribute: .notAnAttribute,
-				multiplier: CGFloat(multiplierValue),
+				multiplier: CGFloat(multiplier),
 				constant: CGFloat(pin.constant)
 			)
 
@@ -61,7 +61,7 @@ extension Anchor {
 		return pairs.compactMap { pin, anotherPin in
 			guard
 				let attribute = pin.attribute.native,
-				let relation = relationValue.native,
+				let relation = relation.native,
 				let anotherAttribute = anotherPin.attribute.native
 				else { return nil }
 
@@ -71,7 +71,7 @@ extension Anchor {
 				relatedBy: relation,
 				toItem: anotherItem,
 				attribute: anotherAttribute,
-				multiplier: CGFloat(multiplierValue),
+				multiplier: CGFloat(multiplier),
 				constant: CGFloat(pin.constant)
 			)
 

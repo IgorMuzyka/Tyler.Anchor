@@ -10,17 +10,17 @@ public extension Anchor {
 	}
 
 	func multiplier(_ value: Double) -> Self {
-		multiplierValue = value
+		multiplier = value
 		return self
 	}
 
 	func multiplier(_ value: Int) -> Self {
-		multiplierValue = Double(value)
+		multiplier = Double(value)
 		return self
 	}
 
 	func priority(_ value: Float) -> Self {
-		priorityValue = value
+		priority = value
 		return self
 	}
 }
