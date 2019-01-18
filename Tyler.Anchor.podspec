@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
 
-	s.name = "Tyler.Anchor"
+	s.name = "Anchor"
 	s.version = "0.0.1"
 	s.swift_version = "4.2"
 	s.summary = "Tyler Anchor"
@@ -9,10 +9,10 @@ Pod::Spec.new do |s|
 	s.source = { :git => "https://github.com/IgorMuzyka/Tyler.Anchor.git", :tag => s.version.to_s }
 	s.license = { :type => "MIT", :file => "LICENSE" }
 	s.author = { 'igormuzyka' => "igormuzyka42@gmail.com" }
-	s.source_files = "Sources/*"
+	s.source_files = "Sources/Anchor/*"
 
-	s.dependency "Tyler.Tag"
-	s.dependency "Tyler.Identifier"
+	s.dependency "Tag"
+	s.dependency "Identifier"
 
 	s.osx.deployment_target = "10.10"
 	s.ios.deployment_target = "9.0"
