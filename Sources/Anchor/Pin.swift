@@ -1,12 +1,14 @@
 
+import Variable
+
 extension Anchor {
 
     public final class Pin: Codable {
 
 		let attribute: Attribute
-		var constant: Double
+		var constant: Variable<Double>
 
-		init(_ attribute: Attribute, constant: Double = 0) {
+		init(_ attribute: Attribute, constant: Variable<Double> = .let(0)) {
 			self.attribute = attribute
 			self.constant = constant
 		}

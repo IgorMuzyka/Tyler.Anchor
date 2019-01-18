@@ -9,10 +9,11 @@ let package = Package(
         .library(name: "Tyler.Anchor", targets: ["Anchor"]),
     ],
     dependencies: [
-    .package(url: "https://github.com/IgorMuzyka/Tyler.Identifier", .branch("master")),
+        .package(url: "https://github.com/IgorMuzyka/Tyler.Identifier", .branch("master")),
         .package(url: "https://github.com/IgorMuzyka/Tyler.Tag", .branch("master")),
+        .package(url: "https://github.com/IgorMuzyka/Tyler.Variable", .branch("master")),
     ],
     targets: [
-        .target(name: "Anchor", dependencies: ["Tyler.Identifier", "Tyler.Tag"]),
+        .target(name: "Anchor", dependencies: ["Tyler.Identifier", "Tyler.Tag", "Tyler.Variable"]),
     ]
 )

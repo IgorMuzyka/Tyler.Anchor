@@ -6,32 +6,42 @@ import AppKit
 #endif
 
 import Tag
+import Variable
+
+#if os(iOS) || os(tvOS)
+fileprivate typealias LayoutPriority = UILayoutPriority
+#elseif os(macOS)
+fileprivate typealias LayoutPriority = NSLayoutConstraint.Priority
+#endif
 
 #if os(iOS) || os(tvOS) || os(macOS)
 
 extension Anchor {
 
-	public func constraints(context: ContextProtocol) -> [NativeConstraint] {
+    public func constraints(context: ContextProtocol, pair: VariableResolutionPair) throws -> [NativeConstraint] {
 		switch to {
-		case .anchor(let anchor): return output(anchor: anchor, context: context)
-		case .size: return outputForSize(context: context)
+        case .anchor(let anchor): return try output(anchor: anchor, context: context, pair: pair)
+		case .size: return try outputForSize(context: context, pair: pair)
 		case .none:
             guard let _ = context.super else { return [] }
 
             to = .anchor(Anchor(.super))
 
-            return constraints(context: context)
+            return try constraints(context: context, pair: pair)
 		}
 	}
 
-	private func outputForSize(context: ContextProtocol) -> [NativeConstraint] {
-		return pins.filter {
+	private func outputForSize(context: ContextProtocol, pair: VariableResolutionPair) throws -> [NativeConstraint] {
+		return try pins.filter {
 			return $0.attribute == .width || $0.attribute == .height
 		}.compactMap { pin in
 			guard
 				let attribute = pin.attribute.native,
 				let relation = relation.native
 				else { return nil }
+
+            let multiplier = try self.multiplier.resolve(pair)!
+            let constant = try pin.constant.resolve(pair)!
 
 			let constraint = NativeConstraint(
 				item: context.view,
@@ -40,8 +50,15 @@ extension Anchor {
 				toItem: nil,
 				attribute: .notAnAttribute,
 				multiplier: CGFloat(multiplier),
-				constant: CGFloat(pin.constant)
+				constant: CGFloat(constant)
 			)
+
+            if
+                let priorityVariable = self.priority,
+                let priority = try priorityVariable.resolve(pair)
+            {
+                constraint.priority = LayoutPriority(rawValue: priority)
+            }
 
             constraint.identifier = tagNames
 
@@ -49,7 +66,7 @@ extension Anchor {
 		}
 	}
 
-	private func output(anchor anotherAnchor: Anchor, context: ContextProtocol) -> [NativeConstraint] {
+	private func output(anchor anotherAnchor: Anchor, context: ContextProtocol, pair: VariableResolutionPair) throws -> [NativeConstraint] {
 		let anotherPins = anotherAnchor.pins.isEmpty ? pins : anotherAnchor.pins
 		let pairs = zip(pins, anotherPins)
 
@@ -58,12 +75,15 @@ extension Anchor {
 			let anotherItem = anotherAnchor.item(in: context)
 			else { return [] }
 
-		return pairs.compactMap { pin, anotherPin in
+		return try pairs.compactMap { pin, anotherPin in
 			guard
 				let attribute = pin.attribute.native,
 				let relation = relation.native,
 				let anotherAttribute = anotherPin.attribute.native
 				else { return nil }
+
+            let multiplier = try self.multiplier.resolve(pair)!
+            let constant = try pin.constant.resolve(pair)!
 
 			let constraint = NativeConstraint(
 				item: item,
@@ -72,8 +92,15 @@ extension Anchor {
 				toItem: anotherItem,
 				attribute: anotherAttribute,
 				multiplier: CGFloat(multiplier),
-				constant: CGFloat(pin.constant)
+				constant: CGFloat(constant)
 			)
+
+            if
+                let priorityVariable = self.priority,
+                let priority = try priorityVariable.resolve(pair)
+            {
+                constraint.priority = LayoutPriority(rawValue: priority)
+            }
 
             constraint.identifier = tagNames
 

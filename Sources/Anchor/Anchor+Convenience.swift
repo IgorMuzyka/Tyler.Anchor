@@ -1,4 +1,6 @@
 
+import Variable
+
 public extension Anchor {
 
 	var edges: Anchor {
@@ -30,19 +32,21 @@ public extension Anchor {
 		removeIfAny(.leading)
 		removeIfAny(.trailing)
 
-		pins.append(Pin(.leading, constant: value))
-		pins.append(Pin(.trailing, constant: -value))
+		pins.append(Pin(.leading, constant: .let(value)))
+		pins.append(Pin(.trailing, constant: .let(-value)))
 
 		return self
 	}
+    #warning("implement variable accordingly (requires implementation for Double variable negation) ")
 
 	func paddingVertically(_ value: Double) -> Anchor {
 		removeIfAny(.top)
 		removeIfAny(.bottom)
 
-		pins.append(Pin(.top, constant: value))
-		pins.append(Pin(.bottom, constant: -value))
+		pins.append(Pin(.top, constant: .let(value)))
+		pins.append(Pin(.bottom, constant: .let(-value)))
 
 		return self
 	}
+    #warning("implement variable accordingly (requires implementation for Double variable negation) ")
 }
