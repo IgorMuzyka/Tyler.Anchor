@@ -2,17 +2,17 @@
 public extension Anchor {
 
 	var equal: Anchor {
-		relation = .equal
+		relationValue = .equal
 		return self
 	}
 
 	var lessThanOrEqual: Anchor {
-		relation = .lessThanOrEqual
+		relationValue = .lessThanOrEqual
 		return self
 	}
 
 	var greaterThanOrEqual: Anchor {
-		relation = .greaterThanOrEqual
+		relationValue = .greaterThanOrEqual
 		return self
 	}
 }

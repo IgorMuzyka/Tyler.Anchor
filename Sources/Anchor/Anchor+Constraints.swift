@@ -19,13 +19,13 @@ fileprivate typealias LayoutPriority = NSLayoutConstraint.Priority
 extension Anchor {
 
     public func constraints(context: ContextProtocol, pair: VariableResolutionPair) throws -> [NativeConstraint] {
-		switch to {
+		switch toValue {
         case .anchor(let anchor): return try output(anchor: anchor, context: context, pair: pair)
 		case .size: return try outputForSize(context: context, pair: pair)
 		case .none:
             guard let _ = context.super else { return [] }
 
-            to = .anchor(Anchor(.super))
+            toValue = .anchor(Anchor(.super))
 
             return try constraints(context: context, pair: pair)
 		}
@@ -37,10 +37,10 @@ extension Anchor {
 		}.compactMap { pin in
 			guard
 				let attribute = pin.attribute.native,
-				let relation = relation.native
+				let relation = relationValue.native
 				else { return nil }
 
-            let multiplier = try self.multiplier.resolve(pair)!
+            let multiplier = try self.multiplierValue.resolve(pair)!
             let constant = try pin.constant.resolve(pair)!
 
 			let constraint = NativeConstraint(
@@ -54,7 +54,7 @@ extension Anchor {
 			)
 
             if
-                let priorityVariable = self.priority,
+                let priorityVariable = self.priorityValue,
                 let priority = try priorityVariable.resolve(pair)
             {
                 constraint.priority = LayoutPriority(rawValue: priority)
@@ -78,11 +78,11 @@ extension Anchor {
 		return try pairs.compactMap { pin, anotherPin in
 			guard
 				let attribute = pin.attribute.native,
-				let relation = relation.native,
+				let relation = relationValue.native,
 				let anotherAttribute = anotherPin.attribute.native
 				else { return nil }
 
-            let multiplier = try self.multiplier.resolve(pair)!
+            let multiplier = try self.multiplierValue.resolve(pair)!
             let constant = try pin.constant.resolve(pair)!
 
 			let constraint = NativeConstraint(
@@ -96,7 +96,7 @@ extension Anchor {
 			)
 
             if
-                let priorityVariable = self.priority,
+                let priorityVariable = self.priorityValue,
                 let priority = try priorityVariable.resolve(pair)
             {
                 constraint.priority = LayoutPriority(rawValue: priority)

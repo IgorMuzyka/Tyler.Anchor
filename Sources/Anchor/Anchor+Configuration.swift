@@ -19,27 +19,27 @@ public extension Anchor {
     }
 
 	func multiplier(_ value: Double) -> Self {
-		multiplier = .let(value)
+		multiplierValue = .let(value)
 		return self
 	}
 
 	func multiplier(_ value: Int) -> Self {
-		multiplier = .let(Double(value))
+		multiplierValue = .let(Double(value))
 		return self
 	}
 
     func multiplier(_ variable: Variable<Double>) -> Self {
-        multiplier = variable
+        multiplierValue = variable
         return self
     }
 
 	func priority(_ value: Float) -> Self {
-		priority = .let(value)
+		priorityValue = .let(value)
 		return self
 	}
 
     func priority(_ variable: Variable<Float>) -> Self {
-        priority = variable
+        priorityValue = variable
         return self
     }
 }

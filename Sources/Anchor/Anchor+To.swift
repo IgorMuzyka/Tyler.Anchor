@@ -6,12 +6,12 @@ public extension Anchor {
 	}
 
 	func to(_ anchor: Anchor) -> Anchor {
-		to = .anchor(anchor)
+		toValue = .anchor(anchor)
 		return self
 	}
 
 	func to(_ size: Double) -> Anchor {
-		to = .size
+		toValue = .size
 		updateIfAny(.width, size)
 		updateIfAny(.height, size)
 		return self
